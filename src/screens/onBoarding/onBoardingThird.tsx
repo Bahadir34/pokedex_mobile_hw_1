@@ -55,12 +55,12 @@ const OnBoardingThird = () => {
           <View style={{ flex: 1, justifyContent: 'flex-end', gap: 10 }}>
             <Button
               title={'Hesap oluşturmak'}
-              onPress={() => navigation.navigate(AppRoutes.ONBOARDINGTHIRD)}
+              onPress={() => navigation.navigate(AppRoutes.REGISTER)}
             />
             <Button
               title={'Zaten bir hesabım var.'}
               haveAccount
-              onPress={() => navigation.navigate(AppRoutes.ONBOARDINGTHIRD)}
+              onPress={() => navigation.navigate(AppRoutes.LOGIN)}
             />
           </View>
         </View>

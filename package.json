@@ -17,9 +17,12 @@
     "iconsax-react-nativejs": "^0.0.8",
     "react": "19.2.3",
     "react-native": "0.87.0",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-safe-area-context": "^5.9.1",
     "react-native-screens": "^4.27.0",
-    "react-native-svg": "^15.15.5"
+    "react-native-svg": "^15.15.5",
+    "react-redux": "^9.3.0",
+    "redux": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

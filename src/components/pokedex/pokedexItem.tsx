@@ -1,4 +1,11 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, { FC, useState } from 'react';
 import { IPokedexListItemProps } from '../../models/ui/pokedexItemProps';
 import AppColors from '../../theme/colors';
@@ -9,15 +16,36 @@ import {
   pokemonImages,
 } from '../../store/mappingImages';
 import { Heart, HeartCircle } from 'iconsax-react-nativejs';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../redux/store';
+import { useNavigation } from '@react-navigation/native';
+import AppRoutes from '../../utils/routes';
+import { IPokemon } from '../../models/data/pokedexList';
+import { TOGGLELIIKE } from '../../redux/action_types';
 
 const PokedexItem: FC<IPokedexListItemProps> = ({ pokemon }) => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const { currentUser } = useSelector((store: RootState) => store);
+  console.log('Guncel Kullanici : ', currentUser);
+
   const [isLiked, setIsLiked] = useState(false);
 
   const image = pokemonImages[pokemon.id];
+
+  const handleLikeAndDislike = () => {
+    if (!currentUser.email) {
+      Alert.alert('Please login before like the Pokemon!');
+    }
+
+    dispatch({ type: TOGGLELIIKE, payload: pokemon?.id });
+  };
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       style={[styles.container, { backgroundColor: `${pokemon.color}15` }]}
+      onPress={() => navigation.navigate(AppRoutes.POKEMON, { id: pokemon.id })}
     >
       <View style={styles.infoContainer}>
         <Text style={styles.number}>{pokemon.number}</Text>
@@ -44,16 +72,18 @@ const PokedexItem: FC<IPokedexListItemProps> = ({ pokemon }) => {
             style={styles.imageBg}
           />
         </View>
-        <TouchableOpacity
-          style={styles.heartContainer}
-          onPress={() => setIsLiked(prev => !prev)}
-        >
-          {isLiked ? (
-            <HeartCircle size={28} style={styles.heart} />
-          ) : (
-            <Heart size={28} />
-          )}
-        </TouchableOpacity>
+        {currentUser?.email && (
+          <TouchableOpacity
+            onPress={() => handleLikeAndDislike()}
+            style={styles.heartContainer}
+          >
+            {currentUser?.favs?.includes(pokemon?.id) ? (
+              <Heart variant="Bold" color={AppColors.White} />
+            ) : (
+              <Heart variant="Linear" color={AppColors.White} />
+            )}
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -141,7 +171,7 @@ const styles = StyleSheet.create({
     zIndex: 11111,
     top: 5,
     right: 5,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    
     borderRadius: 100,
   },
   heart: {

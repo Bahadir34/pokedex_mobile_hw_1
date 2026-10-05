@@ -4,15 +4,19 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import RootNavigation from './src/navigation/rootNavigation';
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
 
 const Stack = createNativeStackNavigator();
 
 const App: React.FC = () => {
   return (
     <NavigationContainer>
-      <SafeAreaProvider>
-        <RootNavigation />
-      </SafeAreaProvider>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <RootNavigation />
+        </SafeAreaProvider>
+      </Provider>
     </NavigationContainer>
   );
 };
